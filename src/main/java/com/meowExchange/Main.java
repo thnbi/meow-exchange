@@ -1,7 +1,8 @@
 package com.meowExchange;
+import com.meowExchange.Models.Menu;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Menu.ShowMenu();
     }
 }
