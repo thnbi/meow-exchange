@@ -5,20 +5,21 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class HttpService {
-    private HttpClient client;
+    private final HttpClient client;
 
     public HttpService() {
         this.client = HttpClient.newHttpClient();
     }
 
-    public HttpRequest createRequest(String url) {
+    private HttpRequest createRequest(String url) {
         return HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .build();
     }
 
-    public HttpResponse<String> sendRequest(HttpRequest request) {
+    public HttpResponse<String> sendRequest(String url) {
         try {
+            HttpRequest request = createRequest(url);
             return client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             e.printStackTrace();
