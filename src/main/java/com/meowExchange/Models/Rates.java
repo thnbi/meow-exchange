@@ -10,28 +10,29 @@ public class Rates {
     private Map<String, Double> conversionRate;
     Gson gson = new Gson();
 
-    public Rates(String currency, HttpResponse<String> response) {
+    public Rates(HttpResponse<String> response) {
         if (response != null){
             RateResponse rateResponse = gson.fromJson(response.body(), RateResponse.class);
-            this.conversionRate = rateResponse.conversion_rate();
+            this.currency = rateResponse.base_code();
+            this.conversionRate = rateResponse.conversion_rates();
         }
-        this.currency = currency;
     }
 
-    public void updateRate(){
+    public void updateRate(String currency){
+        this.currency = currency;
         HttpService httpService = new HttpService();
         HttpResponse<String> response = httpService.sendRequest(ExchangeRateApiUrlBuilder.buildUrl(currency));
         
         Gson gson = new Gson();
         RateResponse rateResponse = gson.fromJson(response.body(), RateResponse.class);
-        this.conversionRate = rateResponse.conversion_rate();
+        this.conversionRate = rateResponse.conversion_rates();
     }
 
     public void setCurrency(String currency){
         this.currency = currency;
     }
 
-    public double getRate(){
+    public double getRate(String currency){
         return conversionRate.get(currency);
     }
 }

@@ -1,5 +1,9 @@
 package com.meowExchange.Models;
 
+import com.meowExchange.Services.HttpService;
+import com.meowExchange.Utils.Calculator;
+
+import java.net.http.HttpResponse;
 import java.util.Scanner;
 
 public class Menu {
@@ -41,7 +45,7 @@ public class Menu {
         clearScreen();
         switch(option) {
             case '1':
-                System.out.println("Dollar ⬌ Brazilian Real");
+                dollarToReal();
                 break;
             case '2':
                 System.out.println("Dollar ⬌ Argentine Peso");
@@ -60,5 +64,18 @@ public class Menu {
     private static void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    private static void dollarToReal(){
+        ExchangeRateApiClient exchangeRateApiClient = new ExchangeRateApiClient();
+        HttpResponse<String> response = exchangeRateApiClient.getExchangeRate("USD");
+        Rates rates = new Rates(response);
+
+        System.out.println("Enter the amount in dollars: ");
+        Scanner scanner = new Scanner(System.in);
+        double amount = scanner.nextDouble();
+
+        double result = Calculator.convert(amount, rates.getRate("BRL"));
+        System.out.println("The amount in Brazilian Real is: " + result);
     }
 }
