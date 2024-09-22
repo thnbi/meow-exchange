@@ -1,5 +1,6 @@
 package com.meowExchange.Models;
 
+import com.google.gson.Gson;
 import com.meowExchange.Services.HttpService;
 import com.meowExchange.Utils.ExchangeRateApiUrlBuilder;
 
@@ -12,8 +13,16 @@ public class ExchangeRateApiClient {
         this.httpService = new HttpService();
     }
 
-    public HttpResponse<String> getExchangeRate(String currency) {
+    public ApiResponse getExchangeRate(String currency) {
         String url = ExchangeRateApiUrlBuilder.buildUrl(currency);
-        return httpService.sendRequest(url);
+        HttpResponse<String> response = httpService.sendRequest(url);
+        response.statusCode();
+        Gson gson = new Gson();
+
+        return gson.fromJson(response.body(), ApiResponse.class);
+    }
+
+    public ApiResponse updateExchangeRate(String currency) {
+        return getExchangeRate(currency);
     }
 }
