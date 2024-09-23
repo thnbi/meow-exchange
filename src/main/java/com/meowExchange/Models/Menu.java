@@ -24,10 +24,14 @@ public class Menu {
                         |                                                                                              |
                         |                                       Choose an option:                                      |
                         |                                                                                              |
-                        |                                   1 - Dollar ⬌ Brazilian Real                                |
-                        |                                   2 - Dollar ⬌ Argentine Peso                                |
-                        |                                   3 - Dollar ⬌ Colombian Peso                                |
-                        |                                   4 - Custom Exchange                                        |
+                        |                                   1 - US Dollar ⬌ Brazilian Real                             |
+                        |                                   2 - US Dollar ⬌ Chinese Ren                                |
+                        |                                   3 - US Dollar ⬌ Japanese Yen                               |
+                        |                                   4 - Brazilian Real ⬌ US Dollar                             |
+                        |                                   5 - Brazilian Real ⬌ Japanese Yen                          |
+                        |                                   6 - Brazilian Real ⬌ Chinese Ren                           |
+                        |                                                                                              |
+                        |                                   0 - Custom Exchange                                        |
                         |                                                                                              |
                         |                                           Q - Quit                                           |
                         |                                                                                              |
@@ -43,21 +47,26 @@ public class Menu {
 
     private static void optionSelected(char option) {
         switch (option) {
+            case '0':
+                customExchange();
+                break;
             case '1':
-                System.out.println("Enter the amount in dollars: ");
-                dollarToReal(Calculator.readDouble());
+                convertCurrency("USD", "BRL");
                 break;
             case '2':
-                System.out.println("Enter the amount in dollars: ");
-                dollarToArgentinePeso(Calculator.readDouble());
+                convertCurrency("USD", "CNY");
                 break;
             case '3':
-                System.out.println("Enter the amount in dollars: ");
-                dollarToColombianPeso(Calculator.readDouble());
+                convertCurrency("USD", "JPY");
                 break;
             case '4':
-                System.out.println("Enter the amount: ");
-                customExchange(Calculator.readDouble());
+                convertCurrency("BRL", "USD");
+                break;
+            case '5':
+                convertCurrency("BRL", "JPY");
+                break;
+            case '6':
+                convertCurrency("BRL", "CNY");
                 break;
             case 'Q':
             case 'q':
@@ -74,32 +83,26 @@ public class Menu {
         System.out.flush();
     }
 
-    private static void dollarToReal(double amount) {
-        double result = ExchangeRateUtil.convertCurrency("USD", "BRL", amount);
-        System.out.println("The amount in Brazilian Real is: " + result);
-        waitForEnter();
-    }
-
-    private static void dollarToArgentinePeso(double amount) {
-        double result = ExchangeRateUtil.convertCurrency("USD", "ARS", amount);
-        System.out.println("The amount in Argentine Peso is: " + result);
-        waitForEnter();
-    }
-
-    private static void dollarToColombianPeso(double amount) {
-        double result = ExchangeRateUtil.convertCurrency("USD", "COP", amount);
-        System.out.println("The amount in Colombian Peso is: " + result);
-        waitForEnter();
-    }
-
-    private static void customExchange(double amount) {
+    private static void customExchange() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter only the currency code (e.g. USD, BRL, CNY, JPY)");
         System.out.println("Enter the currency you want to convert from: ");
         String fromCurrency = scanner.nextLine();
         System.out.println("Enter the currency you want to convert to: ");
         String toCurrency = scanner.nextLine();
-        double result = ExchangeRateUtil.convertCurrency(fromCurrency, toCurrency, amount);
-        System.out.println("The amount in " + toCurrency + " is: " + result);
+
+        convertCurrency(fromCurrency, toCurrency);
+    }
+
+    private static void convertCurrency(String fromCurrency, String toCurrency) {
+        try {
+            System.out.println("Enter the amount you want to convert: ");
+            double amount = Calculator.readDouble();
+            double result = ExchangeRateUtil.convertCurrency(fromCurrency, toCurrency, amount);
+            System.out.println("The amount in " + toCurrency + " is: " + result);
+        } catch (Exception e) {
+            System.out.println("An error occurred: " + e.getMessage());
+        }
         waitForEnter();
     }
 

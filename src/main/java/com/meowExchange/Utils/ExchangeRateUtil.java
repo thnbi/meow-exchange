@@ -8,6 +8,7 @@ public class ExchangeRateUtil {
     public static double convertCurrency(String fromCurrency, String toCurrency, double amount) {
         ApiResponse response = new ExchangeRateApiClient().getExchangeRate(fromCurrency);
         ExchangeRateData exchangeRateData = new ExchangeRateData(response);
+        System.out.println("Exchange rate: " + exchangeRateData.getRate(fromCurrency, toCurrency));
         return Calculator.convert(amount, exchangeRateData.getRate(fromCurrency, toCurrency));
     }
 
