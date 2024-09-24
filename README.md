@@ -1,5 +1,4 @@
 # Meow Exchange 🪙
----
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Um programa que converte moedas utilizando a API ExchangeRatesAPI.
