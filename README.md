@@ -3,7 +3,7 @@
 
 Um programa que converte moedas utilizando a API ExchangeRatesAPI.
 
-## Como configurar sua chave de API:
+## Como configurar para sua própria chave de API:
 
 ### Criando arquivo `.env`:
 
